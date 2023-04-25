@@ -5,7 +5,7 @@ const subtaskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    Task: {
+    Task_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Task',
         // required: true,

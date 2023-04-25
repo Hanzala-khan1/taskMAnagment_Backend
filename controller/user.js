@@ -47,9 +47,11 @@ module.exports = {
          if (!checkpassword) {
             return next(createError(404, "invalid password"))
          }
-         let { password, ...info } = checkuser;
-         info = info._doc;
-         const token = await jwt.sign({ _id: checkuser._id }, process.env.jwt_secret)
+         let { isAdmin , password, ...info } = checkuser._doc;
+         // info = info._doc;
+         const token = await jwt.sign(
+            { id: checkuser._id, isAdmin: checkuser.isAdmin },
+            process.env.jwt_secret)
          return res.status(200).send({
             success: true,
             message: "logged in",
@@ -117,7 +119,7 @@ module.exports = {
          const updateUser = await User.findOneAndUpdate({ _id: req.params.id },
             {
                $set: { password: Password }
-            },{ new: true } )
+            }, { new: true })
          return res.status(200).json({
             success: true,
             message: "User Data",

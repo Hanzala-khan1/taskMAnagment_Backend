@@ -26,10 +26,6 @@ const projectSchema = new mongoose.Schema({
         enum: ['new', 'todo', 'in-progress', 'completed'],
         required: true
     },
-    category: {
-        type: String,
-        required: true,
-    },
     file_link: {
         type: String,
         maxlength: 1000 // Set the maximum length of the description to 1000 characters

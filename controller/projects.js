@@ -4,12 +4,22 @@ module.exports = {
 
     /////////// add projects ///////////////
     async addProjects(req, res, next) {
-        const project = await new Projects({
-            ...req.body,
-            user_id: req.params.userid
-        })
-        await project.save()
-        res.status(200).json(project)
+        try {
+            const project = await new Projects({
+                ...req.body,
+                user_id: req.user.id
+            })
+            await project.save()
+            return res.status(200).send({
+                success: true,
+                message: "project Added secussfully",
+                status: 200,
+                data: project
+            })
+        }
+        catch (error) {
+            next(error)
+        }
     },
 
     //////////// get projects /////////////////
@@ -24,20 +34,73 @@ module.exports = {
                         path: "subtask",
                     },
                 });
-            res.status(200).json(project);
+            return res.status(200).send({
+                success: true,
+                message: "ALL projects",
+                status: 200,
+                data: project
+            })
         } catch (error) {
-          next(error)
+            next(error)
         }
     },
 
 
     //////////// delete projects /////////////////
     async deleteProjects(req, res, next) {
+        const id = req.params.id
+        try {
+            const project = await Projects.findByIdAndDelete(id)
+            return res.status(200).send({
+                success: true,
+                message: "project updated",
+                status: 200,
+                data: project
+            })
 
+        } catch (error) {
+            next(error)
+        }
     },
 
     //////////// update projects /////////////////
     async updateProjects(req, res, next) {
+        const id = req.params.id
+        try {
+            const project = await Projects.findByIdAndUpdate(
+                id,
+                { $set: req.body },
+                { new: true }
+            )
+            return res.status(200).send({
+                success: true,
+                message: "project updated",
+                status: 200,
+                data: project
+            })
 
+        } catch (error) {
+            next(error)
+        }
+    },
+    //////////// update projects /////////////////
+    async updateProjectStatus(req, res, next) {
+        const id = req.params.id
+        try {
+            const project = await Projects.findByIdAndUpdate(
+                id,
+                { "status": req.body.status },
+                { new: true }
+            )
+            return res.status(200).send({
+                success: true,
+                message: "project updated",
+                status: 200,
+                data: project
+            })
+
+        } catch (error) {
+            next(error)
+        }
     }
 }
