@@ -16,7 +16,7 @@ module.exports = {
             try {
                 await Project.findByIdAndUpdate(
                     req.params.projectId,
-                    { $push: { task_id: newtask._id } }
+                    { $push: { task_id: task._id } }
                 )
             }
             catch (error) {
@@ -26,7 +26,7 @@ module.exports = {
                 success: true,
                 message: "Task Added",
                 status: 200,
-                data: task
+                data: task,
             })
         }
         catch (error) {
@@ -38,9 +38,9 @@ module.exports = {
     async getTask(req, res, next) {
         try {
             const task = await Task.find()
-                .populate("Comment")
+                .populate("Comments")
                 .populate("user_id")
-                .populate("user_id")
+                .populate("subtask_id")
                 .populate("project_id");
 
 
@@ -59,9 +59,9 @@ module.exports = {
     //////////// delete projects /////////////////
     async deleteTask(req, res, next) {
         try {
-            const deleteTAsk = Task.findByIdAndDelete(req.params.id)
+            const deleteTAsk = await Task.findByIdAndDelete(req.params.id)
             try {
-                const updateProject = Project.findByIdAndUpdate(
+                const updateProject = await Project.findByIdAndUpdate(
                     req.params.projectid,
                     { $pull: { task_id: req.params.id } }
                 )

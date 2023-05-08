@@ -1,9 +1,10 @@
 const controller = require("../controller/comment");
+const { verifyToken } = require("../utils/varifyToken");
 const Router = require("express").Router();
 
-Router.post("/addcomment",controller.addcomment);
-Router.post("/getcomment",controller.getcomment);
-Router.post("/deletecomments",controller.deletecomment);
-Router.post("/updatecomments",controller.updatecomment);
+Router.post("/addcomment", verifyToken, controller.addcomment);
+Router.post("/getcomment", verifyToken, controller.getcomment);
+Router.post("/deletecomments", verifyToken, controller.deletecomment);
+Router.post("/updatecomments", verifyToken, controller.updatecomment);
 
-module.exports= Router;
+module.exports = Router;

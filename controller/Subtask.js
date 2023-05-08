@@ -11,12 +11,12 @@ module.exports = {
                 user_id: req.user.id,
                 Task_id: req.params.taskId,
             }
-            let Subtask = await new Subtask(newSubtask)
-            Subtask = await task.save()
+            let subtask = await new Subtask(newSubtask)
+            subtask = await subtask.save()
             try {
                 await Task.findByIdAndUpdate(
                     req.params.taskId,
-                    { $push: { subtask_id: Subtask._id } }
+                    { $push: { subtask_id: subtask._id } }
                 )
             }
             catch (error) {
@@ -26,7 +26,7 @@ module.exports = {
                 success: true,
                 message: "Task Added",
                 status: 200,
-                data: task
+                data: subtask
             })
         }
         catch (error) {
@@ -37,15 +37,15 @@ module.exports = {
     //////////// get Subtask /////////////////
     async getSubtask(req, res, next) {
         try {
-            const subTask = await Task.find()
-                .populate("Comment")
+            const subTask = await Subtask.find()
+                .populate("Comments")
                 .populate("user_id")
                 .populate("Task_id")
 
 
             return res.status(200).send({
                 success: true,
-                message: "Tasks",
+                message: "Subtask",
                 status: 200,
                 data: subTask
             })

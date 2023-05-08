@@ -34,7 +34,7 @@ const projectSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    Comment: [{
+    Comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }],

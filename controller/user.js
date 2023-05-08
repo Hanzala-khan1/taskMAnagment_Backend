@@ -47,7 +47,7 @@ module.exports = {
          if (!checkpassword) {
             return next(createError(404, "invalid password"))
          }
-         let { isAdmin , password, ...info } = checkuser._doc;
+         let { isAdmin, password, ...info } = checkuser._doc;
          // info = info._doc;
          const token = await jwt.sign(
             { id: checkuser._id, isAdmin: checkuser.isAdmin },

@@ -25,13 +25,14 @@ module.exports = {
     //////////// get projects /////////////////
     async getProjects(req, res, next) {
         try {
-            const project = await Projects.find()
-                .populate("Comment")
+            const status = req.query.status;
+            const project = await Projects.find({ status: status })
+                .populate("Comments")
                 .populate("user_id")
                 .populate({
                     path: "task_id",
                     populate: {
-                        path: "subtask",
+                        path: "subtask_id",
                     },
                 });
             return res.status(200).send({

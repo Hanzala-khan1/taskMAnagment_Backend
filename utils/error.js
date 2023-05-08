@@ -1,8 +1,8 @@
-module.exports = {
-    createError: (status, message) => {
-      const error = new Error();
-      error.message = message;
-      error.status = status;
-      return error;
-    }
-  };
+
+const createError = (status, message) => {
+  const error = new Error();
+  error.message = message;
+  error.status = status;
+  return error;
+}
+module.exports = createError

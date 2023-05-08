@@ -1,11 +1,11 @@
 const controller = require("../controller/projects");
-const { varifyToken } = require("../utils/varifyToken");
+const { verifyToken } = require("../utils/varifyToken");
 const Router = require("express").Router();
 
-Router.post("/addproject/:userid",varifyToken,controller.addProjects);
-Router.post("/getproject",varifyToken,controller.getProjects);
-Router.post("/deleteproject",varifyToken,controller.deleteProjects);
-Router.post("/updateproject",varifyToken,controller.updateProjects);
-Router.post("/updateprojectStatus",varifyToken,controller.updateProjectStatus);
+Router.post("/addproject/:userid", verifyToken, controller.addProjects);
+Router.post("/getproject", verifyToken, controller.getProjects);
+Router.post("/deleteproject", verifyToken, controller.deleteProjects);
+Router.post("/updateproject", verifyToken, controller.updateProjects);
+Router.post("/updateprojectStatus", verifyToken, controller.updateProjectStatus);
 
-module.exports= Router;
+module.exports = Router;
