@@ -17,6 +17,7 @@ app.use("/v/subtask", require("./routes/Subtask.js"));
 app.use("/v/comment", require("./routes/Comment.js"));
 app.use("/v/chat", require("./routes/chats.js"));
 app.use("/v/message", require("./routes/messages.js"));
+app.use("/v/notification", require("./routes/notifications.js"));
 
 
 
@@ -42,8 +43,9 @@ const server = app.listen(
 );
 connect();
 
+/////////////////////////////////////////////////////////////////////////////
 
-///////////////// socket connection 
+///////////////// socket connection ///////////////////
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
@@ -79,6 +81,20 @@ io.on("connection", (socket) => {
 
       socket.in(user._id).emit("message recieved", newMessageRecieved);
     });
+  });
+
+
+  // Listen for incoming messages from the client
+  socket.on('Notifications', (message) => {
+    console.log(`received Notifications: ${message}`);
+
+    // Broadcast the message to all connected clients
+    io.emit('Notifications', message);
+  });
+
+  // Listen for disconnections
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
   });
 
   socket.off("setup", () => {
