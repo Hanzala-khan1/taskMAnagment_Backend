@@ -20,6 +20,11 @@ app.use((req, res, next) => {
 app.use(cors());
 
 
+/////////////////// test browser /////////
+app.get("/", (req, res) => {
+  res.send("task managment running bro");
+})
+
 
 //////////// routes /////////////
 app.use("/v/user", require("./routes/user.js"));
