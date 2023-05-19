@@ -1,7 +1,8 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const { createError } = require("../utils/error");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { APP_host } = require("../middleware/dataconfig");
 require('dotenv').config();
 
 module.exports = {
@@ -45,7 +46,7 @@ module.exports = {
          }
          const checkpassword = await bcrypt.compareSync(req.body.password, checkuser.password);
          if (!checkpassword) {
-            return next(createError(404, "invalid password"))
+            return next(createError(404, "wrong password"))
          }
          let { isAdmin, password, ...info } = checkuser._doc;
          // info = info._doc;
@@ -125,6 +126,28 @@ module.exports = {
             message: "User Data",
             status: 200,
             data: updateUser
+         })
+      }
+      catch (error) {
+         next(error)
+      }
+   },
+   async updateImage(req, res, next) {
+
+      try {
+         const file = `${APP_host}profile/${file.mimetype.startsWith('image') ? 'images' : 'files'
+            }/${file.filename}`;
+         const updateUserImage = await User.findOneAndUpdate({ _id: req.params.id },
+            {
+               $set: { image: file }
+            }, { new: true })
+
+         ////////////////////////////
+         return res.status(200).json({
+            success: true,
+            message: "User Image updated",
+            status: 200,
+            data: updateUserImage
          })
       }
       catch (error) {

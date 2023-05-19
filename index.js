@@ -1,12 +1,24 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const dotenv = require("dotenv");
 const connect = require("./connection/connection.js");
-// require('./.env').config();
+const bodyParser = require('body-parser');
 dotenv.config();
 
-/////////// middle ware //////////
-app.use(express.json())
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+// app.use(formidable());
+app.options('*', cors());
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+app.use(cors());
+
 
 
 //////////// routes /////////////
@@ -18,6 +30,7 @@ app.use("/v/comment", require("./routes/Comment.js"));
 app.use("/v/chat", require("./routes/chats.js"));
 app.use("/v/message", require("./routes/messages.js"));
 app.use("/v/notification", require("./routes/notifications.js"));
+app.use("/v/category", require("./routes/category.js"));
 
 
 
@@ -43,15 +56,16 @@ const server = app.listen(
 );
 connect();
 
+//////////// images path //////////////////////////////
+app.use('/profile/images', express.static("./upload/images/"));
+app.use('/profile/files', express.static("./upload/files/"));
+
 /////////////////////////////////////////////////////////////////////////////
 
 ///////////////// socket connection ///////////////////
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
-  cors: {
-    origin: "http://localhost:3000",
-    // credentials: true,
-  },
+  cors: {},
 });
 
 

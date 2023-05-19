@@ -11,25 +11,34 @@ const projectSchema = new mongoose.Schema({
     }],
     title: {
         type: String,
-        required: true,
+
     },
     description: {
         type: String,
-        required: true,
+
     },
     priority: {
         type: String,
-        required: true,
+
     },
     status: {
         type: String,
         enum: ['new', 'todo', 'in-progress', 'completed'],
-        required: true
+
     },
-    file_link: {
-        type: String,
-        maxlength: 1000 // Set the maximum length of the description to 1000 characters
-    },
+    files: [
+        {
+            filename: {
+                type: String
+            },
+            path: {
+                type: String
+            },
+            type: {
+                type: String
+            }
+        }
+    ],
     created_at: {
         type: Date,
         default: Date.now()

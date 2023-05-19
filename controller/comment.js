@@ -50,12 +50,48 @@ module.exports = {
             next(error)
         }
     },
+    /////////// add comment Reply ///////////////
+    async addcommentReply(req, res, next) {
+        try {
+
+            const commentId = req.params.commentId; // Replace with the actual comment ID
+
+            // Find the comment
+            const comment = await Comment.findById(commentId);
+
+            // Create a new reply
+            const newReply = {
+                comment: req.body.comment,
+                user_id: req.user.id
+            };
+
+            // Add the new reply to the comment
+            comment.replies.push(newReply);
+
+            // Save the updated comment
+            const savedcomment = await comment.save();
+            return res.status(200).send({
+                success: true,
+                message: "Comment Reply Added",
+                status: 200,
+                data: savedcomment
+            })
+
+        } catch (error) {
+            next(error)
+        }
+    },
 
     //////////// get comment /////////////////
     async getcomment(req, res, next) {
         try {
             const comment = await Comment.find()
-            res.status(200).json(comment);
+            return res.status(200).send({
+                success: true,
+                message: "Comment Reply Added",
+                status: 200,
+                data: comment
+            })
         } catch (error) {
             next(error)
         }
@@ -64,11 +100,33 @@ module.exports = {
 
     //////////// delete comment /////////////////
     async deletecomment(req, res, next) {
-
+        commentid = request.params.id
+        try {
+            const comment = await Comment.findByIdAndDelete(commentid)
+            return res.status(200).send({
+                success: true,
+                message: "Comment Reply Added",
+                status: 200,
+                data: comment
+            })
+        }
+        catch (error) {
+            next(error)
+        }
     },
 
     //////////// update comment /////////////////
     async updatecomment(req, res, next) {
-
+        commentid = request.params.id
+        try {
+            const comment = await Comment.findByIdAndDelete(
+                commentid,
+                { $set: req.body },
+                { new: true }
+            );
+        }
+        catch (error) {
+            next(error)
+        }
     }
 }

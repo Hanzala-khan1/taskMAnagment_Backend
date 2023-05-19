@@ -1,5 +1,6 @@
-const createError = require("./error")
+
 const jwt = require('jsonwebtoken');
+const { createError } = require('./error');
 
 const verifyToken = (req, res, next) => {
   const token = req.headers.token;

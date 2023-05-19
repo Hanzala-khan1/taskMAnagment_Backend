@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    image: {
+        type: String,
+        required: true,
+        default: "https://icon-library.com/images/no-profile-pic-icon/no-profile-pic-icon-11.jpg"
+    },
     isAdmin: {
         type: Boolean,
         default: false,
