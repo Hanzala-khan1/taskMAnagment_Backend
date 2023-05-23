@@ -79,7 +79,7 @@ module.exports = {
 
     //////////// delete projects /////////////////
     async deleteProjects(req, res, next) {
-        const id = req.params.id
+        const id = req.params.projectid
         try {
             const project = await Projects.findByIdAndDelete(id)
             return res.status(200).send({
@@ -96,7 +96,7 @@ module.exports = {
 
     //////////// update projects /////////////////
     async updateProjects(req, res, next) {
-        const id = req.params.id
+        const id = req.params.projectid
         try {
             const project = await Projects.findByIdAndUpdate(
                 id,
@@ -116,7 +116,7 @@ module.exports = {
     },
     //////////// update projects /////////////////
     async updateProjectStatus(req, res, next) {
-        const id = req.params.id
+        const id = req.params.projectid
         try {
             const project = await Projects.findByIdAndUpdate(
                 id,

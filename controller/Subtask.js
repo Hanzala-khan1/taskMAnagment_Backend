@@ -89,7 +89,7 @@ module.exports = {
     //////////// delete Subtask /////////////////
     async deleteSubtask(req, res, next) {
         try {
-            const deleteSubtask = Subtask.findByIdAndDelete(req.params.id)
+            const deleteSubtask = Subtask.findByIdAndDelete(req.params.subtaskid)
             try {
                 const updateTask = Task.findByIdAndUpdate(
                     req.params.taskId,
@@ -115,7 +115,7 @@ module.exports = {
     async updateSubtask(req, res, next) {
         try {
             const updateSubTask = Subtask.findByIdAndUpdate(
-                req.params.id,
+                req.params.subtaskid,
                 { $set: req.body },
                 { new: true }
             )
@@ -133,7 +133,7 @@ module.exports = {
     },
     //////////// update Subtask status /////////////////
     async updateSubtaskStatus(req, res, next) {
-        const id = req.params.id
+        const id = req.params.subtaskid
         try {
             const updateSubTask = Subtask.findByIdAndUpdate(
                 id,

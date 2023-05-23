@@ -5,8 +5,8 @@ const Router = require("express").Router();
 
 Router.post("/addSubtask/:taskId", verifyToken, upload.array("file"), controller.addSubtask);
 Router.get("/getSubtask", controller.getSubtask);
-Router.post("/deleteSubtask", controller.deleteSubtask);
-Router.post("/updateSubtask", controller.updateSubtask);
-Router.post("/updateSubtaskStatus", controller.updateSubtaskStatus);
+Router.delete("/deleteSubtask/:subtaskid", controller.deleteSubtask);
+Router.put("/updateSubtask/:subtaskid", controller.updateSubtask);
+Router.put("/updateSubtaskStatus/:subtaskid", controller.updateSubtaskStatus);
 
 module.exports = Router;

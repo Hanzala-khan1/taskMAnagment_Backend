@@ -5,8 +5,8 @@ const Router = require("express").Router();
 
 Router.post("/addproject", verifyToken, upload.array("file"), controller.addProjects);
 Router.get("/getproject", verifyToken, controller.getProjects);
-Router.post("/deleteproject", verifyToken, controller.deleteProjects);
-Router.post("/updateproject", verifyToken, controller.updateProjects);
-Router.post("/updateprojectStatus", verifyToken, controller.updateProjectStatus);
+Router.delete("/deleteproject/:projectid", verifyToken, controller.deleteProjects);
+Router.put("/updateproject/:projectid", verifyToken, controller.updateProjects);
+Router.put("/updateprojectStatus/:projectid", verifyToken, controller.updateProjectStatus);
 
 module.exports = Router;

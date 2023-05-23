@@ -86,7 +86,7 @@ module.exports = {
     //////////// delete projects /////////////////
     async deleteTask(req, res, next) {
         try {
-            const deleteTAsk = await Task.findByIdAndDelete(req.params.id)
+            const deleteTAsk = await Task.findByIdAndDelete(req.params.taskid)
             try {
                 const updateProject = await Project.findByIdAndUpdate(
                     req.params.projectid,
@@ -112,7 +112,7 @@ module.exports = {
     async updateTask(req, res, next) {
         try {
             const updateTask = Task.findByIdAndUpdate(
-                req.params.id,
+                req.params.taskid,
                 { $set: req.body },
                 { new: true }
             )
@@ -130,7 +130,7 @@ module.exports = {
     },
     //////////// update Task status /////////////////
     async updateTaskStatus(req, res, next) {
-        const id = req.params.id
+        const id = req.params.taskid
         try {
             const updateTask = Task.findByIdAndUpdate(
                 id,
