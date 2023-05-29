@@ -13,17 +13,18 @@ module.exports = {
                 path: `${APP_host}profile/${file.mimetype.startsWith('image') ? 'images' : 'files'}/${file.filename}`,
                 type: file.mimetype.split('/')[0],
             }));
-            const newtask = {
+            // const newtask = 
+            let task = await new Task({
                 status,
                 description,
                 title,
                 priority,
+                files,
                 category,
                 user_id: req.user.id,
                 project_id: req.params.projectId
-            }
-            let task = await new Task(newtask)
-            task = await task.save()
+            })
+            await task.save()
             try {
                 await Project.findByIdAndUpdate(
                     req.params.projectId,
