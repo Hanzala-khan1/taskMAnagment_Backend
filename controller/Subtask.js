@@ -65,14 +65,9 @@ module.exports = {
         try {
             const subTask = await Subtask.find(query)
                 .populate("Comments")
-                .populate("user_id")
+                .populate("user_id", "_id name image ")
                 .populate("category")
-                .populate({
-                    path: 'Task_id',
-                    populate: {
-                        path: 'project_id',
-                    },
-                })
+                .populate("task_id", "_id title description")
                 .sort({ date: -1 });
 
 

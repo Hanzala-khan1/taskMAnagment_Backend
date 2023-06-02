@@ -65,9 +65,8 @@ module.exports = {
         try {
             const task = await Task.find(query)
                 .populate("Comments")
-                .populate("user_id")
-                .populate("subtask_id")
-                .populate("project_id")
+                .populate("user_id", "_id name image")
+                .populate("project_id", "_id title description")
                 .populate("category")
                 .sort({ date: -1 });
 

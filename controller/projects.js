@@ -56,13 +56,8 @@ module.exports = {
             // Fetch the projects based on the query
             const projects = await Projects.find(query)
                 .populate('Comments')
-                .populate('user_id')
-                .populate({
-                    path: 'task_id',
-                    populate: {
-                        path: 'subtask_id',
-                    },
-                })
+                .populate("user_id", "_id name image ")
+                .populate("task_id")
                 .sort({ date: -1 });
 
 
