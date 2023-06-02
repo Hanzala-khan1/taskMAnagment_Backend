@@ -24,17 +24,33 @@ const subtaskSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['new', 'todo', 'in-progress', 'completed'],
+        enum: ['new', 'todo', 'pending', 'completed'],
         required: true
+    },
+    Due_date: {
+        type: String,
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
     },
-    file_link: {
+    Due_date: {
         type: String,
-        maxlength: 1000 // Set the maximum length of the description to 1000 characters
+        required: true
     },
+    files: [
+        {
+            filename: {
+                type: String
+            },
+            path: {
+                type: String
+            },
+            type: {
+                type: String
+            }
+        }
+    ],
     created_at: {
         type: Date,
         default: Date.now()

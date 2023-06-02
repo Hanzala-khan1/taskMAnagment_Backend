@@ -7,7 +7,7 @@ module.exports = {
     /////////// add Subtask ///////////////
     async addSubtask(req, res, next) {
         try {
-            const { status, description, title, priority, category } = req.body;
+            const { status, description, title, priority, category, Due_date } = req.body;
             const files = req.files.map(file => ({
                 filename: file.originalname,
                 path: `${APP_host}profile/${file.mimetype.startsWith('image') ? 'images' : 'files'}/${file.filename}`,
@@ -19,6 +19,8 @@ module.exports = {
                 title,
                 priority,
                 category,
+                Due_date,
+                files,
                 user_id: req.user.id,
                 Task_id: req.params.taskId,
             }

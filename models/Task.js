@@ -9,10 +9,17 @@ const taskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Subtask'
     }],
+    Due_date: {
+        type: String,
+        required: true
+    },
     project_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
         // required: true,
+    },
+    Due_date: {
+        type: String,
     },
     title: {
         type: String,
@@ -28,7 +35,7 @@ const taskSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['new', 'todo', 'in-progress', 'completed'],
+        enum: ['new', 'todo', 'pending', 'completed'],
         required: true
     },
     category: {

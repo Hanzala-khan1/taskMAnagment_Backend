@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const projectSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     task_id: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -11,20 +12,33 @@ const projectSchema = new mongoose.Schema({
     }],
     title: {
         type: String,
+        required: true
 
     },
     description: {
         type: String,
+        required: true
 
     },
     priority: {
         type: String,
+        required: true
 
+    },
+    Due_date: {
+        type: String,
+        required: true
     },
     status: {
         type: String,
-        enum: ['new', 'todo', 'in-progress', 'completed'],
+        enum: ['new', 'todo', 'pending', 'completed'],
+        required: true
 
+    },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+        required: true
     },
     files: [
         {

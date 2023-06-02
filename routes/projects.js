@@ -3,7 +3,7 @@ const { upload } = require("../middleware/multer");
 const { verifyToken } = require("../utils/varifyToken");
 const Router = require("express").Router();
 
-Router.post("/addproject", verifyToken, upload.array("file"), controller.addProjects);
+Router.post("/addproject", verifyToken, upload.array("files"), controller.addProjects);
 Router.get("/getproject", verifyToken, controller.getProjects);
 Router.delete("/deleteproject/:projectid", verifyToken, controller.deleteProjects);
 Router.put("/updateproject/:projectid", verifyToken, controller.updateProjects);

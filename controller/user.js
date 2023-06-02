@@ -99,6 +99,26 @@ module.exports = {
       }
    },
    ///////////////////////////////////////////////////////////////////////////////////
+   ///////////// get single  user /////////////////
+   async updateUser(req, res, next) {
+      try {
+         const updateUs = await User.findOneAndUpdate(
+            { _id: req.params.id },
+            { $set: req.body },
+            { new: true }
+         )
+         return res.status(200).json({
+            success: true,
+            message: "User Data",
+            status: 200,
+            data: updateUs
+         })
+      }
+      catch (error) {
+         next(error)
+      }
+   },
+   ///////////////////////////////////////////////////////////////////////////////////
 
    ///////////// get single  user /////////////////
    async updatePassword(req, res, next) {
@@ -135,11 +155,11 @@ module.exports = {
    async updateImage(req, res, next) {
 
       try {
-         const file = `${APP_host}profile/${file.mimetype.startsWith('image') ? 'images' : 'files'
-            }/${file.filename}`;
+         const img = `${APP_host}profile/${req.file.mimetype.startsWith('image') ? 'images' : 'files'
+            }/${req.file.filename}`;
          const updateUserImage = await User.findOneAndUpdate({ _id: req.params.id },
             {
-               $set: { image: file }
+               $set: { image: img }
             }, { new: true })
 
          ////////////////////////////

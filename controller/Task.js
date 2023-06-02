@@ -7,7 +7,7 @@ module.exports = {
     /////////// add projects ///////////////
     async addTask(req, res, next) {
         try {
-            const { status, description, title, priority, category } = req.body;
+            const { status, description, title, priority, category, Due_date } = req.body;
             const files = req.files.map(file => ({
                 filename: file.originalname,
                 path: `${APP_host}profile/${file.mimetype.startsWith('image') ? 'images' : 'files'}/${file.filename}`,
@@ -20,6 +20,7 @@ module.exports = {
                 title,
                 priority,
                 files,
+                Due_date,
                 category,
                 user_id: req.user.id,
                 project_id: req.params.projectId
