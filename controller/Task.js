@@ -8,11 +8,13 @@ module.exports = {
     async addTask(req, res, next) {
         try {
             const { status, description, title, priority, category, Due_date } = req.body;
-            const files = req.files.map(file => ({
-                filename: file.originalname,
-                path: `${APP_host}profile/${file.mimetype.startsWith('image') ? 'images' : 'files'}/${file.filename}`,
-                type: file.mimetype.split('/')[0],
-            }));
+            if (req.files) {
+                const files = req.files.map(file => ({
+                    filename: file.originalname,
+                    path: `${APP_host}profile/${file.mimetype.startsWith('image') ? 'images' : 'files'}/${file.filename}`,
+                    type: file.mimetype.split('/')[0],
+                }));
+            }
             // const newtask = 
             let task = await new Task({
                 status,

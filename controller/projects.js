@@ -8,11 +8,13 @@ module.exports = {
     async addProjects(req, res, next) {
         try {
             const { status, description, title, priority, category, Due_date } = req.body;
+            if(req.files){
             const files = req.files.map(file => ({
                 filename: file.originalname,
                 path: `${APP_host}profile/${file.mimetype.startsWith('image') ? 'images' : 'files'}/${file.filename}`,
                 type: file.mimetype.split('/')[0],
             }));
+        }
 
             const project = new Projects({
                 status,
@@ -58,6 +60,7 @@ module.exports = {
                 .populate('Comments')
                 .populate("user_id", "_id name image ")
                 .populate("task_id")
+                .populate("category")
                 .sort({ date: -1 });
 
 
