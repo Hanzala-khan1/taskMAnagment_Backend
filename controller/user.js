@@ -173,5 +173,18 @@ module.exports = {
       catch (error) {
          next(error)
       }
+   },
+   async deleteUser(req, res, next) {
+      try {
+         const deleteTAsk = await User.findByIdAndDelete(req.params.taskid)
+         return res.status(200).send({
+            success: true,
+            message: "User Deleted",
+            status: 200,
+            data: deleteTAsk
+         })
+      } catch (err) {
+         console.log(err)
+      }
    }
 }

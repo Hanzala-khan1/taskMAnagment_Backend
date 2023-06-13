@@ -8,8 +8,9 @@ module.exports = {
     async addTask(req, res, next) {
         try {
             const { status, description, title, priority, category, Due_date } = req.body;
+            let files = []
             if (req.files) {
-                const files = req.files.map(file => ({
+                files = req.files.map(file => ({
                     filename: file.originalname,
                     path: `${APP_host}profile/${file.mimetype.startsWith('image') ? 'images' : 'files'}/${file.filename}`,
                     type: file.mimetype.split('/')[0],
