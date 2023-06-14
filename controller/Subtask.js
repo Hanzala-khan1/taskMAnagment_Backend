@@ -90,15 +90,15 @@ module.exports = {
     async deleteSubtask(req, res, next) {
         try {
             const deleteSubtask = Subtask.findByIdAndDelete(req.params.subtaskid)
-            try {
-                const updateTask = Task.findByIdAndUpdate(
-                    req.params.taskId,
-                    { $pull: { subtask_id: req.params.id } }
-                )
-            }
-            catch (error) {
-                next(error)
-            }
+            // try {
+            //     const updateTask = Task.findByIdAndUpdate(
+            //         req.params.taskId,
+            //         { $pull: { subtask_id: req.params.id } }
+            //     )
+            // }
+            // catch (error) {
+            //     next(error)
+            // }
             return res.status(200).send({
                 success: true,
                 message: "SubTask deleted",

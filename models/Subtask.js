@@ -34,6 +34,10 @@ const subtaskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
     },
+    type: {
+        type: String,
+        default: "Subtask"
+    },
     Due_date: {
         type: String,
         required: true

@@ -29,6 +29,10 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    type: {
+        type: String,
+        default: "Project"
+    },
     status: {
         type: String,
         enum: ['new', 'todo', 'pending', 'completed'],

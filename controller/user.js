@@ -135,8 +135,8 @@ module.exports = {
                data: []
             })
          }
-         const salt = await bcrypt.genSalt(10);
-         const Password = await bcrypt.hash(req.body.newPassword, salt)
+         const salt = await bcrypt.genSaltSync(10);
+         const Password = await bcrypt.hashSync(req.body.newPassword, salt)
          const updateUser = await User.findOneAndUpdate({ _id: req.params.id },
             {
                $set: { password: Password }
@@ -176,7 +176,7 @@ module.exports = {
    },
    async deleteUser(req, res, next) {
       try {
-         const deleteTAsk = await User.findByIdAndDelete(req.params.taskid)
+         const deleteTAsk = await User.findByIdAndDelete(req.params.id)
          return res.status(200).send({
             success: true,
             message: "User Deleted",

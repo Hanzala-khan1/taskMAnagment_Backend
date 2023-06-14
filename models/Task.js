@@ -18,8 +18,9 @@ const taskSchema = new mongoose.Schema({
         ref: 'Project',
         // required: true,
     },
-    Due_date: {
+     type: {
         type: String,
+        default: "Task"
     },
     title: {
         type: String,
