@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const taskSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     subtask_id: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -16,9 +17,9 @@ const taskSchema = new mongoose.Schema({
     project_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
-        // required: true,
+        required: true,
     },
-     type: {
+    type: {
         type: String,
         default: "Task"
     },
@@ -36,7 +37,7 @@ const taskSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['new', 'todo', 'pending', 'completed'],
+        enum: ['new', 'todo', 'pending', 'completed', 'pendingclientreview', 'pendingthirdpartyaction', 'revision', 'readyforreview'],
         required: true
     },
     category: {
@@ -65,4 +66,5 @@ const taskSchema = new mongoose.Schema({
         ref: 'Comment'
     }],
 })
+
 module.exports = mongoose.model("Task", taskSchema)

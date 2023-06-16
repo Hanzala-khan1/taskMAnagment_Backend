@@ -1,5 +1,6 @@
 const { APP_host } = require("../middleware/dataconfig");
 const Task = require("../models/Task")
+const Subtask = require("../models/Subtask")
 const Project = require("../models/projects")
 
 module.exports = {
@@ -8,6 +9,17 @@ module.exports = {
     async addTask(req, res, next) {
         try {
             const { status, description, title, priority, category, Due_date } = req.body;
+            /////////////////////////////////////
+            project_id = req.params.projectId
+            const project = await Project.findById(project_id);
+            if (!project) {
+                return res.status(404).json({
+                    success: false,
+                    message: "no project found",
+                    status: 404,
+                });
+            }
+            ///////////////////////////////////////
             let files = []
             if (req.files) {
                 files = req.files.map(file => ({
@@ -90,32 +102,39 @@ module.exports = {
     //////////// delete projects /////////////////
     async deleteTask(req, res, next) {
         try {
-            const deleteTAsk = await Task.findByIdAndDelete(req.params.taskid)
+            const deletedTask = await Task.findByIdAndDelete(req.params.taskid);
+
             try {
-                const updateProject = await Project.findByIdAndUpdate(
-                    req.params.projectid,
-                    { $pull: { task_id: req.params.id } }
-                )
+                await Project.findByIdAndUpdate(deletedTask.project_id, { $pull: { task_id: req.params.taskid } });
+            } catch (error) {
+                // Handle error updating the project
+                return res.status(500).send({
+                    success: false,
+                    message: "Error updating the project",
+                    status: 500,
+                    error: error.message
+                });
             }
-            catch (error) {
-                next(error)
-            }
+
+            const deletedSubtasks = await Subtask.deleteMany({ Task_id: deletedTask._id });
+
             return res.status(200).send({
                 success: true,
                 message: "Task deleted",
                 status: 200,
-                data: deleteTAsk
-            })
-        }
-        catch (error) {
-            next(error)
+                data: { deletedTask }
+            });
+        } catch (error) {
+            // Handle error deleting the task
+            next(error);
         }
     },
+
 
     //////////// update projects /////////////////
     async updateTask(req, res, next) {
         try {
-            const updateTask = Task.findByIdAndUpdate(
+            const updateTask = await Task.findByIdAndUpdate(
                 req.params.taskid,
                 { $set: req.body },
                 { new: true }
@@ -135,8 +154,9 @@ module.exports = {
     //////////// update Task status /////////////////
     async updateTaskStatus(req, res, next) {
         const id = req.params.taskid
+        const status = req.body.status
         try {
-            const updateTask = Task.findByIdAndUpdate(
+            const updateTask = await Task.findByIdAndUpdate(
                 id,
                 { status: req.body.status },
                 { new: true }

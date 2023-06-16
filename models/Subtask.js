@@ -3,12 +3,13 @@ const mongoose = require("mongoose");
 const subtaskSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     Task_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Task',
-        // required: true,
+        required: true,
     },
     title: {
         type: String,
@@ -24,15 +25,17 @@ const subtaskSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['new', 'todo', 'pending', 'completed'],
+        enum: ['new', 'todo', 'pending', 'completed', 'pendingclientreview', 'pendingthirdpartyaction', 'revision', 'readyforreview'],
         required: true
     },
     Due_date: {
         type: String,
+        required: true
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
+        required: true
     },
     type: {
         type: String,

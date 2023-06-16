@@ -8,6 +8,17 @@ module.exports = {
     async addSubtask(req, res, next) {
         try {
             const { status, description, title, priority, category, Due_date } = req.body;
+            ///////////////////////////////
+            Task_id = req.params.taskId
+            const task = await Task.findById(Task_id);
+            if (!task) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Task not found",
+                    status: 404,
+                });
+            }
+            //////////////////////////////
             let files = []
             if (req.files) {
                 files = req.files.map(file => ({
@@ -89,16 +100,16 @@ module.exports = {
     //////////// delete Subtask /////////////////
     async deleteSubtask(req, res, next) {
         try {
-            const deleteSubtask = Subtask.findByIdAndDelete(req.params.subtaskid)
-            // try {
-            //     const updateTask = Task.findByIdAndUpdate(
-            //         req.params.taskId,
-            //         { $pull: { subtask_id: req.params.id } }
-            //     )
-            // }
-            // catch (error) {
-            //     next(error)
-            // }
+            const deleteSubtask = await Subtask.findByIdAndDelete(req.params.subtaskid)
+            try {
+                const updateTask = Task.findByIdAndUpdate(
+                    deleteSubtask.Task_id,
+                    { $pull: { subtask_id: req.params.subtaskid } }
+                )
+            }
+            catch (error) {
+                next(error)
+            }
             return res.status(200).send({
                 success: true,
                 message: "SubTask deleted",
@@ -114,7 +125,7 @@ module.exports = {
     //////////// update Subtask /////////////////
     async updateSubtask(req, res, next) {
         try {
-            const updateSubTask = Subtask.findByIdAndUpdate(
+            const updateSubTask = await Subtask.findByIdAndUpdate(
                 req.params.subtaskid,
                 { $set: req.body },
                 { new: true }
@@ -135,7 +146,7 @@ module.exports = {
     async updateSubtaskStatus(req, res, next) {
         const id = req.params.subtaskid
         try {
-            const updateSubTask = Subtask.findByIdAndUpdate(
+            const updateSubTask = await Subtask.findByIdAndUpdate(
                 id,
                 { status: req.body.status },
                 { new: true }

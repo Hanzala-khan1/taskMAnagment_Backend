@@ -1,5 +1,7 @@
 const { APP_host } = require("../middleware/dataconfig");
 const Projects = require("../models/projects")
+const Task = require("../models/Task")
+const Subtask = require("../models/Subtask")
 const { createError } = require("../utils/error");
 
 module.exports = {
@@ -8,13 +10,14 @@ module.exports = {
     async addProjects(req, res, next) {
         try {
             const { status, description, title, priority, category, Due_date } = req.body;
-            if(req.files){
-            const files = req.files.map(file => ({
-                filename: file.originalname,
-                path: `${APP_host}profile/${file.mimetype.startsWith('image') ? 'images' : 'files'}/${file.filename}`,
-                type: file.mimetype.split('/')[0],
-            }));
-        }
+            let files = []
+            if (req.files) {
+                files = req.files.map(file => ({
+                    filename: file.originalname,
+                    path: `${APP_host}profile/${file.mimetype.startsWith('image') ? 'images' : 'files'}/${file.filename}`,
+                    type: file.mimetype.split('/')[0],
+                }));
+            }
 
             const project = new Projects({
                 status,
@@ -78,18 +81,36 @@ module.exports = {
 
     //////////// delete projects /////////////////
     async deleteProjects(req, res, next) {
-        const id = req.params.projectid
+        const projectId = req.params.projectid;
         try {
-            const project = await Projects.findByIdAndDelete(id)
-            return res.status(200).send({
-                success: true,
-                message: "project updated",
-                status: 200,
-                data: project
-            })
+            // Check if the project exists
+            const project = await Projects.findById(projectId);
+            if (!project) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Project not found",
+                    status: 404,
+                });
+            }
 
+            // Delete the project
+            const deletedProject = await Projects.findByIdAndDelete(projectId);
+
+            // Find tasks associated with the project and delete subtasks in parallel
+            const tasks = await Task.find({ project_id: projectId }).lean().select('_id');
+            const deleteTasksPromise = Task.deleteMany({ project_id: projectId }).exec();
+            const deleteSubtasksPromise = Subtask.deleteMany({ Task_id: { $in: tasks } }).exec();
+
+            await Promise.all([deleteTasksPromise, deleteSubtasksPromise]);
+
+            return res.status(200).json({
+                success: true,
+                message: "Project and associated tasks/subtasks deleted",
+                status: 200,
+                data: deletedProject,
+            });
         } catch (error) {
-            next(error)
+            next(error);
         }
     },
 

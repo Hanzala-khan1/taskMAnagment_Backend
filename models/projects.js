@@ -8,7 +8,7 @@ const projectSchema = new mongoose.Schema({
     },
     task_id: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Task'
+        ref: 'Task',
     }],
     title: {
         type: String,
@@ -35,7 +35,7 @@ const projectSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['new', 'todo', 'pending', 'completed'],
+        enum: ['new', 'todo', 'pending', 'completed', 'pendingclientreview', 'pendingthirdpartyaction', 'revision', 'readyforreview'],
         required: true
 
     },
@@ -66,4 +66,5 @@ const projectSchema = new mongoose.Schema({
         ref: 'Comment'
     }],
 })
+
 module.exports = mongoose.model("Project", projectSchema)
